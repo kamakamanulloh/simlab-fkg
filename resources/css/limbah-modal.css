@@ -1,0 +1,242 @@
+/* ===============================
+   MODAL LIMBAH
+================================ */
+
+.modal-limbah-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    backdrop-filter: blur(2px);
+    z-index: 50;
+
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+
+    overflow-y: auto;
+    padding: 32px 16px;
+}
+
+/* aktif */
+.modal-limbah-overlay.show {
+    display: flex;
+}
+
+/* ===============================
+   CONTAINER
+================================ */
+
+.modal-limbah {
+    width: 100%;
+    max-width: 760px;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.25);
+
+    display: flex;
+    flex-direction: column;
+
+    max-height: 90vh;
+    overflow: hidden;
+}
+
+/* ===============================
+   HEADER
+================================ */
+
+.modal-limbah-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+
+    padding: 18px 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-limbah-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.modal-limbah-close {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.modal-limbah-close:hover {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+/* ===============================
+   BODY (SCROLL AREA)
+================================ */
+
+.modal-limbah-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 22px;
+}
+
+/* ===============================
+   FORM GRID
+================================ */
+
+.limbah-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 16px;
+}
+
+.limbah-grid-1 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+/* ===============================
+   FORM ELEMENT
+================================ */
+
+.limbah-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.limbah-group input,
+.limbah-group select,
+.limbah-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 13px;
+
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+
+    outline: none;
+}
+
+.limbah-group input:focus,
+.limbah-group select:focus,
+.limbah-group textarea:focus {
+    border-color: #10b981;
+    box-shadow: 0 0 0 2px rgba(16,185,129,.15);
+}
+
+.limbah-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ===============================
+   SECTION BOX
+================================ */
+
+.limbah-section {
+    background: #f9fafb;
+    border-radius: 14px;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+}
+
+.limbah-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 10px;
+}
+
+/* ===============================
+   RADIO GROUP
+================================ */
+
+.limbah-radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    font-size: 12px;
+    color: #374151;
+}
+
+.limbah-radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.limbah-radio-group input {
+    accent-color: #10b981;
+}
+
+/* ===============================
+   FOOTER
+================================ */
+
+.modal-limbah-footer {
+    position: sticky;
+    bottom: 0;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+
+    padding: 16px 22px;
+
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-limbah-cancel {
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.btn-limbah-save {
+    padding: 8px 18px;
+    border-radius: 10px;
+    border: none;
+    background: #059669;
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.btn-limbah-save:hover {
+    background: #047857;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 640px) {
+    .limbah-grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-limbah {
+        border-radius: 14px;
+    }
+}
