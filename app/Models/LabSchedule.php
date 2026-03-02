@@ -17,7 +17,7 @@ class LabSchedule extends Model
         'ruangan',
         'tanggal',
         'waktu',
-        'instruktur',
+        'instruktur_id',
         'jumlah_peserta',
         'catatan',
         'status',
@@ -27,5 +27,9 @@ class LabSchedule extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+    public function instruktur()
+    {
+        return $this->belongsTo(UserDosen::class, 'instruktur_id');
     }
 }

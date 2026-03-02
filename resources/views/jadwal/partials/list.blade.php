@@ -1,62 +1,92 @@
-@forelse($schedules as $item)
-<div
-    class="group relative rounded-xl border border-emerald-100 bg-white px-4 py-3 shadow-sm
-           hover:shadow-md hover:border-emerald-300 transition">
+<div class="bg-white rounded-2xl shadow-sm border border-emerald-50 overflow-hidden">
 
-    {{-- AKSEN GARIS KIRI --}}
-    <span class="absolute left-0 top-3 bottom-3 w-1 rounded-full bg-emerald-500"></span>
-
-    <div class="flex items-start justify-between gap-4 pl-3">
-
-        {{-- INFO --}}
-        <div class="space-y-0.5">
-            <div class="font-semibold text-slate-800 text-[13px]">
-                {{ $item->judul }}
-            </div>
-
-            <div class="flex items-center gap-2 text-[11px] text-slate-500">
-                <span>
-                    {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}
-                </span>
-                <span class="text-slate-300">•</span>
-                <span>{{ $item->waktu }}</span>
-            </div>
+    {{-- HEADER --}}
+    <div class="px-5 py-4 border-b border-slate-100">
+        <div class="text-sm font-semibold text-slate-800">
+            Daftar Jadwal
         </div>
-
-        {{-- MENU 3 TITIK --}}
-        <div class="relative">
-            <button
-                class="btnMenuSchedule p-1 rounded-full text-slate-400
-                       hover:bg-emerald-50 hover:text-emerald-700 transition"
-                data-id="{{ $item->id }}">
-                ⋮
-            </button>
-
-            <div
-                class="menuSchedule hidden absolute right-0 mt-2 w-32
-                       rounded-xl bg-white shadow-lg border border-slate-100
-                       text-xs z-20 overflow-hidden">
-
-                <button
-                    class="btnEditSchedule w-full flex items-center gap-2
-                           px-3 py-2 hover:bg-emerald-50 text-slate-700"
-                    data-id="{{ $item->id }}">
-                    ✏️ Edit
-                </button>
-
-                <button
-                    class="btnDeleteSchedule w-full flex items-center gap-2
-                           px-3 py-2 text-rose-600 hover:bg-rose-50"
-                    data-id="{{ $item->id }}">
-                    🗑 Hapus
-                </button>
-            </div>
+        <div id="weekLabel" class="text-xs text-emerald-700 mt-1">
+            {{ $weekRange ?? '' }}
         </div>
+    </div>
+
+    {{-- HEADER KOLOM --}}
+    <div class="grid grid-cols-3 px-5 py-3 text-[11px] font-medium text-slate-500 border-b border-slate-100 bg-slate-50">
+        <div>Kegiatan</div>
+        <div>Ruangan</div>
+        <div>Waktu</div>
+    </div>
+
+    {{-- LIST --}}
+    <div class="divide-y divide-slate-100 text-xs">
+
+        @forelse($schedules as $item)
+            <div class="px-5 py-4 hover:bg-emerald-50/40 transition">
+
+                <div class="grid grid-cols-3 gap-4 items-center">
+
+                    {{-- KEGIATAN --}}
+                    <div>
+                        <div class="font-medium text-slate-800 text-[13px]">
+                            {{ $item->judul }}
+                        </div>
+
+                        @php
+                            $badgeColor = match($item->jenis) {
+                                'Praktikum' => 'bg-blue-100 text-blue-700',
+                                'OSCE' => 'bg-purple-100 text-purple-700',
+                                'Pelatihan' => 'bg-emerald-100 text-emerald-700',
+                                default => 'bg-slate-100 text-slate-600',
+                            };
+                        @endphp
+
+                        <span class="inline-block mt-2 px-2.5 py-0.5 rounded-full text-[11px] font-medium {{ $badgeColor }}">
+                            {{ $item->jenis }}
+                        </span>
+                    </div>
+
+                    {{-- RUANGAN --}}
+                    <div class="flex items-center gap-2 text-slate-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-600"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 21c-4-4-7-7-7-11a7 7 0 1114 0c0 4-3 7-7 11z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        {{ $item->ruangan }}
+                    </div>
+
+                    {{-- WAKTU --}}
+                    <div class="space-y-1 text-slate-600">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-600"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7H3v12a2 2 0 002 2z"/>
+                            </svg>
+                            {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-600"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                <circle cx="12" cy="12" r="9"/>
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 7v5l3 3"/>
+                            </svg>
+                            {{ $item->waktu }}
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        @empty
+            <div class="text-center py-8 text-slate-500">
+                Tidak ada jadwal ditemukan.
+            </div>
+        @endforelse
 
     </div>
+
 </div>
-@empty
-<div class="text-center text-slate-500 text-xs py-6">
-    Tidak ada jadwal pada tanggal ini.
-</div>
-@endforelse

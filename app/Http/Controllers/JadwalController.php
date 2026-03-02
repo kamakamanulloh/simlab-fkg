@@ -77,9 +77,13 @@ class JadwalController extends Controller
                 'persen' => min(100, $row->total * 20), // contoh hitungan dummy: 1 jadwal = 20%
             ];
         });
+            $dosen = DB::table('users_dosen')
+                ->select('id','name','departemen')
+                ->orderBy('name','asc')
+                ->get();
 
     return view('jadwal.index', compact(
-        'weekRange', 'schedules', 'roomsToday', 'weeklyUsage', 'filterDate'
+        'weekRange', 'schedules', 'roomsToday', 'weeklyUsage', 'filterDate','dosen'
     ));
 }
        public function store(Request $request)
@@ -90,7 +94,7 @@ class JadwalController extends Controller
             'ruangan'         => ['nullable', 'string', 'max:150'],
             'tanggal'         => ['required', 'date'],
             'waktu'           => ['required', 'string', 'max:50'],
-            'instruktur'      => ['nullable', 'string', 'max:150'],
+            'instruktur_id'      => ['required', 'exists:users_dosen,id'],
             'jumlah_peserta'  => ['nullable', 'integer', 'min:1'],
             'catatan'         => ['nullable', 'string'],
         ]);
@@ -100,19 +104,30 @@ class JadwalController extends Controller
 
         $schedule = LabSchedule::create($validated);
 
+        
+
         return response()->json([
             'status'  => 'ok',
             'message' => 'Jadwal berhasil diajukan dan menunggu persetujuan.',
             'data'    => $schedule,
         ]);
     }
-    public function byDate(Request $request)
+ public function byDate(Request $request)
 {
-    $date = $request->query('tanggal');
+    $query = LabSchedule::with('instruktur')
+                ->orderBy('tanggal')
+                ->orderBy('waktu');
 
-    $schedules = LabSchedule::whereDate('tanggal', $date)
-        ->orderBy('waktu')
-        ->get();
+    if ($request->start && $request->end) {
+        $query->whereBetween('tanggal', [
+            $request->start,
+            $request->end
+        ]);
+    } elseif ($request->start) {
+        $query->whereDate('tanggal', $request->start);
+    }
+
+    $schedules = $query->get();
 
     return view('jadwal.partials.list', compact('schedules'));
 }

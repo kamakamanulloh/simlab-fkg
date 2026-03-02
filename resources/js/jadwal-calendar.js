@@ -35,19 +35,65 @@ function renderCalendar() {
     $('#calendarGrid').html(html)
 }
 
-$(document).on('click', '.calendar-day', function () {
-    const date = $(this).data('date')
+let startDate = null
+let endDate = null
 
-    $('.calendar-day').removeClass('bg-emerald-600 text-white')
-    $(this).addClass('bg-emerald-600 text-white')
+$(document).on('click', '.calendar-day', function () {
+
+    const selectedDate = $(this).data('date')
+
+    // Reset jika sudah ada 2 tanggal
+    if (startDate && endDate) {
+        startDate = null
+        endDate = null
+        $('.calendar-day').removeClass('bg-emerald-600 text-white')
+    }
+
+    // Set tanggal pertama
+    if (!startDate) {
+        startDate = selectedDate
+        $(this).addClass('bg-emerald-600 text-white')
+        loadSchedule(startDate, null)
+        return
+    }
+
+    // Set tanggal kedua
+    if (!endDate) {
+        endDate = selectedDate
+
+        // Jika user klik terbalik (akhir dulu)
+        if (endDate < startDate) {
+            let temp = startDate
+            startDate = endDate
+            endDate = temp
+        }
+
+        highlightRange()
+        loadSchedule(startDate, endDate)
+        updateWeekLabel(startDate)
+        
+    }
+})
+function highlightRange() {
+    $('.calendar-day').each(function () {
+        const date = $(this).data('date')
+
+        if (date >= startDate && date <= endDate) {
+            $(this).addClass('bg-emerald-600 text-white')
+        }
+    })
+}
+function loadSchedule(start, end) {
 
     $('#scheduleList').html('<div class="text-xs text-slate-500">Memuat jadwal...</div>')
 
-    $.get('/jadwal/by-date', { tanggal: date }, function (res) {
+    $.get('/jadwal/by-date', {
+        start: start,
+        end: end
+    }, function (res) {
         $('#scheduleList').html(res)
     })
-})
-
+}
 $('#btnPrevMonth').on('click', () => {
     current.setMonth(current.getMonth() - 1)
     renderCalendar()
@@ -118,7 +164,7 @@ $(document).ready(function () {
                     text: res.message
                 });
 
-                reloadScheduleList();
+                loadSchedule();
             }
         });
     });
@@ -141,7 +187,7 @@ $(document).ready(function () {
     type: 'DELETE',
     success: function (res) {
         Swal.fire('Terhapus', res.message, 'success');
-        reloadScheduleList();
+        loadSchedule();
     }
 });
 
@@ -150,9 +196,29 @@ $(document).ready(function () {
     });
 
     // === RELOAD LIST ===
-    function reloadScheduleList() {
+    function loadSchedule() {
         $('#scheduleList').load(location.href + ' #scheduleList>*');
     }
 
 });
+   $('#instruktur_id').select2({
+    dropdownParent: $('#modalJadwal'),
+    placeholder: "Pilih Instruktur",
+    width: '100%'
+});
+function updateWeekLabel(dateStr) {
+    const date = new Date(dateStr)
+
+    const start = new Date(date)
+    start.setDate(date.getDate() - date.getDay())
+
+    const end = new Date(start)
+    end.setDate(start.getDate() + 6)
+
+    const options = { day: 'numeric', month: 'long', year: 'numeric' }
+
+    const label = `Jadwal minggu ini (${start.toLocaleDateString('id-ID', options)} - ${end.toLocaleDateString('id-ID', options)})`
+
+    $('#weekLabel').text(label)
+}
 

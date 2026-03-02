@@ -70,10 +70,18 @@
             </div>
 
             {{-- Instruktur --}}
+            
             <div class="space-y-1">
-                <label class="text-xs font-medium text-slate-800">Instruktur</label>
-                <input type="text" name="instruktur"
-                    class="w-full rounded-2xl border border-emerald-100 bg-emerald-50/60 px-4 py-2.5 text-sm">
+                <label class="text-xs font-medium text-slate-800">Instruktur / Dosen</label>
+                <select name="instruktur_id" class="w-full rounded-2xl border border-emerald-100 bg-emerald-50/60 px-4 py-2.5 text-sm" id="instruktur_id"
+                    >
+                    <option value="">Pilih Instruktur</option>
+                    @foreach($dosen as $item)
+                        <option value="{{ $item->id }}">
+                            {{ $item->name }} ({{ $item->departemen }})
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             {{-- Peserta --}}

@@ -5,8 +5,14 @@
     <title>@yield('title', 'SIM-Lab FKG')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      @vite(['resources/css/app.css', 'resources/css/limbah-modal.css','resources/js/app.js', 'resources/js/jadwal-calendar.js','resources/css/maintenance.css',
-    'resources/js/maintenance-modal.js'])
+      @vite(['resources/css/app.css', 
+      'resources/css/limbah-modal.css',
+      'resources/js/app.js',
+       'resources/js/jadwal-calendar.js',
+       'resources/css/maintenance.css',
+    'resources/js/maintenance-modal.js',
+     'resources/js/logbook.js',
+    ])
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 

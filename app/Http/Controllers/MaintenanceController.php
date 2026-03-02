@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\CostAnalysis;
 
 class MaintenanceController extends Controller
 {
@@ -81,4 +82,20 @@ class MaintenanceController extends Controller
             'bulanIni'
         ));
     }
+   public function storeCost(Request $request)
+{
+    $validated = $request->validate([
+        'jenis_tindakan' => 'required|string|max:100',
+        'detail_perbaikan' => 'required|string',
+        'biaya' => 'required|numeric|min:0',
+        'status_pengerjaan' => 'required|string'
+    ]);
+
+    CostAnalysis::create($validated);
+
+    return response()->json([
+        'status' => 'ok',
+        'message' => 'Analisis biaya berhasil diproses'
+    ]);
+}
 }

@@ -22,17 +22,31 @@
         </p>
     </div>
 
-    <div class="flex items-center gap-3">
-        <button
-            class="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-2 text-xs font-medium text-white shadow-lg shadow-emerald-300/40 hover:bg-emerald-800">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 12l-4-4m0 0L8 12m4-4v12"/>
-            </svg>
-            Export Portfolio
-        </button>
-    </div>
+ <div class="flex items-center gap-3">
+
+    {{-- Tombol Buat Pelatihan --}}
+    <button  id="btnBuatPelatihan"
+        class="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-white px-4 py-2 text-xs font-medium text-emerald-800 shadow-sm hover:bg-emerald-50 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 4v16m8-8H4"/>
+        </svg>
+        Buat Pelatihan
+    </button>
+
+    {{-- Tombol Export --}}
+    <button
+        class="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-2 text-xs font-medium text-white shadow-lg shadow-emerald-300/40 hover:bg-emerald-800 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 12l-4-4m0 0L8 12m4-4v12"/>
+        </svg>
+        Export Portfolio
+    </button>
+
+</div>
 </div>
 
 <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-50">
@@ -314,7 +328,191 @@
         </div>
     </div>
 </div>
+{{-- MODAL INPUT PELATIHAN --}}
+<div id="modalPelatihan"
+    class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/40 backdrop-blur-sm overflow-y-auto">
 
+       <div class="min-h-screen flex items-start justify-center p-6 py-10">
+         <div class="w-full max-w-4xl bg-white rounded-3xl shadow-2xl max-h-[95vh] flex flex-col">
+
+        {{-- HEADER --}}
+        <div class="flex items-center justify-between px-6 py-4 bg-slate-100 border-b">
+            <h2 class="text-sm font-semibold text-slate-800">
+                Input Data Pelatihan
+            </h2>
+            <button id="closePelatihan"
+                class="text-slate-500 hover:text-slate-800 text-lg">✕</button>
+        </div>
+
+       <form id="formPelatihan"
+      data-url="{{ route('pelatihan.store') }}"
+      class="flex-1 overflow-y-auto p-6 space-y-5 text-xs">
+            @csrf
+
+            {{-- BASIC INFO --}}
+            <div class="space-y-3">
+
+                <div>
+                    <label class="block mb-1 font-medium">Nama Pelatihan</label>
+                    <input type="text" name="nama_pelatihan"
+                        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2">
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Jenis Pelatihan</label>
+                    <select name="jenis_pelatihan"
+                        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2">
+                        <option>Skill Lab</option>
+                        <option>Workshop</option>
+                        <option>Seminar</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Lokasi / Ruangan</label>
+                    <input type="text" name="lokasi"
+                        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2">
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Level Pelatihan</label>
+                    <select name="level"
+                        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2">
+                        <option>Basic</option>
+                        <option>Intermediate</option>
+                        <option>Advanced</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block mb-1 font-medium">Jumlah Kuota</label>
+                    <input type="number" name="kuota"
+                        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2">
+                </div>
+
+            </div>
+
+            {{-- KESIAPAN SARANA --}}
+            <div class="rounded-2xl border border-slate-200 overflow-hidden">
+                <div class="bg-slate-100 px-4 py-2 font-semibold text-slate-700">
+                    Kesiapan Sarana
+                </div>
+
+                <div class="p-4 space-y-4">
+
+                    {{-- Alat --}}
+                    <div>
+                        <label class="block mb-2 font-medium">Alat & Instrumen</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="alat_status" value="Siap Digunakan">
+                                Siap Digunakan
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="alat_status" value="Perlu Cek">
+                                Perlu Cek
+                            </label>
+                        </div>
+                    </div>
+
+                    {{-- Bahan --}}
+                    <div>
+                        <label class="block mb-2 font-medium">Ketersediaan Bahan/Material</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="bahan_status" value="Lengkap">
+                                Lengkap
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="bahan_status" value="Kurang">
+                                Kurang
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {{-- PROTOKOL K3 --}}
+            <div class="rounded-2xl border border-slate-200 overflow-hidden">
+                <div class="bg-slate-100 px-4 py-2 font-semibold text-slate-700">
+                    Protokol Kesehatan & K3
+                </div>
+
+                <div class="p-4">
+                    <div class="flex gap-6">
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="k3_status" value="Sesuai Standar">
+                            Sesuai Standar
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="radio" name="k3_status" value="Belum Memenuhi">
+                            Belum Memenuhi
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            {{-- MATERI --}}
+            <div class="rounded-2xl border border-slate-200 overflow-hidden">
+                <div class="bg-slate-100 px-4 py-2 font-semibold text-slate-700">
+                    Materi & Evaluasi
+                </div>
+                <div class="p-4">
+                    <textarea name="materi"
+                        class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2"
+                        rows="3"></textarea>
+                </div>
+            </div>
+
+            {{-- STATUS AKHIR --}}
+            <div>
+                <div class="font-semibold text-slate-700 mb-2">
+                    Status Akhir
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+
+                    <div>
+                        <label class="block mb-1 font-medium">Status Pelaksanaan</label>
+                        <select name="status_pelaksanaan"
+                            class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2">
+                            <option>Terjadwal</option>
+                            <option>Selesai</option>
+                            <option>Dibatalkan</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block mb-1 font-medium">Hasil Pelatihan</label>
+                        <select name="hasil"
+                            class="w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-2">
+                            <option>Proses</option>
+                            <option>Lulus</option>
+                            <option>Tidak Lulus</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+            {{-- FOOTER --}}
+            <div class="flex justify-end gap-3 pt-4 border-t">
+                <button type="button"
+                    id="cancelPelatihan"
+                    class="px-4 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50">
+                    Batal
+                </button>
+                <button type="submit"
+                    class="px-4 py-2 rounded-xl bg-emerald-800 text-white hover:bg-emerald-900">
+                    Simpan
+                </button>
+            </div>
+
+        </form>
+    </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')

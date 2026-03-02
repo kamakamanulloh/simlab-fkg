@@ -11,6 +11,7 @@ use App\Http\Controllers\LimbahController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\QualityController;
 use App\Http\Controllers\LabWasteController;
+use App\Http\Controllers\PelatihanController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -75,14 +76,27 @@ Route::get('/jadwal/by-date', [JadwalController::class, 'byDate']);
         Route::get('/quality/document/{id}/view', [QualityController::class, 'viewDocument'])->name('quality.document.view');
     Route::get('/quality/document/{id}/download', [QualityController::class, 'downloadDocument'])->name('quality.document.download');
         Route::post('/quality/document/store', [QualityController::class, 'storeDocument'])->name('quality.store-document');
-});
-
 
 Route::post('/lab-waste/store', [LabWasteController::class, 'store'])
     ->name('lab-waste.store');
 Route::get('/jadwal/{id}', [JadwalController::class, 'show']);
 Route::put('/jadwal/{id}', [JadwalController::class, 'update']);
 Route::delete('/jadwal/{id}', [JadwalController::class, 'destroy']);
+    Route::get('/pelatihan', [PelatihanController::class, 'index'])->name('pelatihan.index');
+
+    Route::post('/pelatihan/store', [PelatihanController::class, 'store'])->name('pelatihan.store');
+
+    Route::get('/pelatihan/{id}', [PelatihanController::class, 'show']);
+
+    Route::put('/pelatihan/{id}', [PelatihanController::class, 'update']);
+    Route::post('/analisis-biaya/store', [MaintenanceController::class, 'storeCost'])
+    ->name('analisis.store');
+        });
+
+
+
+
+   
 
 // optional: redirect root ke login atau dashboard
 Route::get('/', function () {

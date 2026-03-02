@@ -44,6 +44,16 @@
     </svg>
     Jadwalkan Pemeliharaan
 </button>
+<button
+    id="btnOpenCostModal"
+    class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-medium text-white shadow-lg shadow-emerald-300/40 hover:bg-emerald-700">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V4m0 8v4"/>
+    </svg>
+    Analisis Biaya
+</button>
 
     </div>
 </div>
@@ -92,10 +102,10 @@
 </div>
 
 {{-- GRID UTAMA: RIWAYAT + MENDATANG --}}
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+<div class="grid grid-cols-1 gap-5">
     
     {{-- RIWAYAT PEMELIHARAAN/KALIBRASI/ANALISIS (2/3 Kolom) --}}
-    <div class="lg:col-span-2 bg-white rounded-2xl p-5 shadow-sm border border-emerald-50">
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-50">
         {{-- TAB SUB-MENU --}}
         <div x-data="{ activeSubTab: 'pemeliharaan' }">
             <div class="flex border-b border-slate-100 mb-5">
@@ -126,7 +136,7 @@
             {{-- ISI SUB-TAB PEMELIHARAAN (default) --}}
             {{-- =================================== --}}
             <div x-show="activeSubTab === 'pemeliharaan'">
-                <div class="mb-4">
+                <div class="mb-12">
                     <div class="text-sm font-semibold text-slate-800">Riwayat Pemeliharaan</div>
                     <div class="text-xs text-emerald-700">Daftar aktivitas pemeliharaan preventif dan korektif</div>
                 </div>
@@ -151,7 +161,7 @@
                                     $jenisClass = match($item['jenis']) {
                                         'Preventive' => 'bg-blue-100 text-blue-700',
                                         'Corrective' => 'bg-orange-100 text-orange-700',
-                                        'Calibration' => 'bg-purple-100 text-purple-700',
+                                        'Calibration' => 'bg-emerald-100 text-emerald-700',
                                         default => 'bg-gray-100 text-gray-700',
                                     };
                                 @endphp
@@ -193,6 +203,44 @@
                         </tbody>
                     </table>
                 </div>
+                 {{-- PEMELIHARAAN MENDATANG (1/3 Kolom) - Sama seperti sebelumnya --}}
+    <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-50 h-fit">
+        <div class="mb-4">
+            <div class="text-sm font-semibold text-slate-800">Pemeliharaan Mendatang (30 Hari)</div>
+            <div class="text-xs text-emerald-700">Jadwal yang akan datang di bulan {{ $bulanIni }}</div>
+        </div>
+
+        <div class="space-y-3">
+            @forelse($upcoming as $item)
+                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50/70 border border-slate-100">
+                    <div class="flex items-start gap-3">
+                        {{-- Icon --}}
+                        <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full {{ $item['icon_class'] }}">
+                            @if(str_contains($item['judul'], 'Kalibrasi'))
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2v2m0-8V4m0 8v4m-5 3h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                            @endif
+                        </div>
+                        
+                        <div>
+                            <div class="text-xs font-medium text-slate-800">{{ $item['judul'] }}</div>
+                            <div class="text-[10px] text-slate-500">{{ $item['tanggal'] }} - {{ $item['eq_code'] }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-right text-[11px] font-semibold text-red-500 min-w-max">
+                        {{ $item['sisa_hari'] }}
+                    </div>
+                </div>
+            @empty
+                <div class="text-center text-xs text-slate-500 py-3">
+                    Tidak ada jadwal pemeliharaan mendatang.
+                </div>
+            @endforelse
+        </div>
+    </div>
+
             </div>
 
             {{-- =================================== --}}
@@ -264,7 +312,7 @@
             {{-- =================================== --}}
             {{-- ISI SUB-TAB ANALISIS BIAYA (Gambar 2) --}}
             {{-- =================================== --}}
-            <div x-show="activeSubTab === 'analisis'">
+            <div  x-show="activeSubTab === 'analisis'">
                  <div class="mb-4">
                     <div class="text-sm font-semibold text-slate-800">Ringkasan Biaya Pemeliharaan</div>
                     <div class="text-xs text-emerald-700">Breakdown biaya per kategori (dalam ribuan Rupiah)</div>
@@ -283,8 +331,8 @@
                         <div class="text-xl font-bold text-slate-800 mt-1">Rp {{ $cost_summary['Korektif'] ?? 0 }}K</div>
                     </div>
                     {{-- Kalibrasi --}}
-                    <div class="rounded-xl p-4 bg-purple-50/70 border border-purple-200">
-                        <div class="text-xs font-semibold text-purple-700">Kalibrasi</div>
+                    <div class="rounded-xl p-4 bg-emerald-50/70 border border-emerald-200">
+                        <div class="text-xs font-semibold text-emerald-700">Kalibrasi</div>
                         <div class="text-xl font-bold text-slate-800 mt-1">Rp {{ $cost_summary['Kalibrasi'] ?? 0 }}K</div>
                     </div>
                 </div>
@@ -315,7 +363,7 @@
                                 <div class="bg-orange-500 text-white flex items-center justify-center" style="width: {{ $corrective_width }}%">
                                     @if($corrective_width > 15) {{ $trend['corrective'] }}K @endif
                                 </div>
-                                <div class="bg-purple-500 text-white flex items-center justify-center" style="width: {{ $calibration_width }}%">
+                                <div class="bg-emerald-500 text-white flex items-center justify-center" style="width: {{ $calibration_width }}%">
                                     @if($calibration_width > 15) {{ $trend['calibration'] }}K @endif
                                 </div>
                             </div>
@@ -331,44 +379,7 @@
         </div>
     </div>
 
-    {{-- PEMELIHARAAN MENDATANG (1/3 Kolom) - Sama seperti sebelumnya --}}
-    <div class="bg-white rounded-2xl p-5 shadow-sm border border-emerald-50 h-fit">
-        <div class="mb-4">
-            <div class="text-sm font-semibold text-slate-800">Pemeliharaan Mendatang (30 Hari)</div>
-            <div class="text-xs text-emerald-700">Jadwal yang akan datang di bulan {{ $bulanIni }}</div>
-        </div>
-
-        <div class="space-y-3">
-            @forelse($upcoming as $item)
-                <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50/70 border border-slate-100">
-                    <div class="flex items-start gap-3">
-                        {{-- Icon --}}
-                        <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full {{ $item['icon_class'] }}">
-                            @if(str_contains($item['judul'], 'Kalibrasi'))
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2v2m0-8V4m0 8v4m-5 3h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                            @else
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-                            @endif
-                        </div>
-                        
-                        <div>
-                            <div class="text-xs font-medium text-slate-800">{{ $item['judul'] }}</div>
-                            <div class="text-[10px] text-slate-500">{{ $item['tanggal'] }} - {{ $item['eq_code'] }}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="text-right text-[11px] font-semibold text-red-500 min-w-max">
-                        {{ $item['sisa_hari'] }}
-                    </div>
-                </div>
-            @empty
-                <div class="text-center text-xs text-slate-500 py-3">
-                    Tidak ada jadwal pemeliharaan mendatang.
-                </div>
-            @endforelse
-        </div>
-    </div>
-
+   
 </div>
 {{-- MODAL JADWAL PEMELIHARAAN --}}
 <div id="maintenanceModal"
@@ -442,7 +453,102 @@
         </form>
     </div>
 </div>
+<div id="costModal"
+     class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm"
+     x-data="{ 
+        activeSubTab: 'pemeliharaan' 
+     }"
+     x-init="
+        window.addEventListener('openAnalisisTab', () => {
+            activeSubTab = 'analisis'
+        })
+     ">
 
+    <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden">
+
+        <!-- HEADER -->
+        <div class="flex items-center justify-between px-6 py-4 border-b">
+            <div>
+                <h2 class="text-base font-semibold text-slate-800">
+                    Analisis Biaya
+                </h2>
+                <p class="text-xs text-emerald-700 mt-1">
+                    Kelola jadwal pemeliharaan preventif, korektif, dan kalibrasi peralatan
+                </p>
+            </div>
+            <button class="btnCloseCost text-slate-400 hover:text-slate-700 text-lg">
+                ✕
+            </button>
+        </div>
+
+        <form id="formCost"
+              data-url="{{ route('analisis.store') }}"
+              class="p-6 space-y-5 text-sm">
+            @csrf
+
+            <!-- Jenis Tindakan -->
+            <div>
+                <label class="block mb-2 font-medium text-slate-700">
+                    Jenis Tindakan
+                </label>
+                <input type="text"
+                       name="jenis_tindakan"
+                       placeholder="Masukkan Jenis Tindakan (Preventif/Korektif)"
+                       class="w-full rounded-xl bg-emerald-50 border border-emerald-100 px-4 py-3 focus:ring-emerald-500 focus:border-emerald-500">
+            </div>
+
+            <!-- Detail Perbaikan -->
+            <div>
+                <label class="block mb-2 font-medium text-slate-700">
+                    Detail Perbaikan
+                </label>
+                <textarea name="detail_perbaikan"
+                          rows="3"
+                          placeholder="Masukkan Detail Perbaikan"
+                          class="w-full rounded-xl bg-emerald-50 border border-emerald-100 px-4 py-3 focus:ring-emerald-500 focus:border-emerald-500"></textarea>
+            </div>
+
+            <!-- Biaya -->
+            <div>
+                <label class="block mb-2 font-medium text-slate-700">
+                    Biaya Sparepart/Jasa
+                </label>
+                <input type="text"
+                 id="biayaInput"
+                       name="biaya"
+                       placeholder="Masukkan Biaya Yang Dikeluarkan"
+                       class="w-full rounded-xl bg-emerald-50 border border-emerald-100 px-4 py-3 focus:ring-emerald-500 focus:border-emerald-500">
+            </div>
+
+            <!-- Status -->
+            <div>
+                <label class="block mb-2 font-medium text-slate-700">
+                    Status Pengerjaan
+                </label>
+                <select name="status_pengerjaan"
+                        class="w-full rounded-xl bg-emerald-50 border border-emerald-100 px-4 py-3 focus:ring-emerald-500 focus:border-emerald-500">
+                    <option value="">(Tepat Waktu/Terlambat)</option>
+                    <option value="Tepat Waktu">Tepat Waktu</option>
+                    <option value="Terlambat">Terlambat</option>
+                </select>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="flex justify-end gap-3 pt-4">
+                <button type="button"
+                        class="btnCloseCost px-5 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-50">
+                    Batal
+                </button>
+
+                <button type="submit"
+                        class="px-5 py-2 rounded-xl bg-emerald-800 text-white hover:bg-emerald-900">
+                    Proses Peminjaman
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
