@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
-
+use App\Models\User;
 class LoginController extends Controller
 {
     public function showLoginForm()
@@ -43,12 +43,22 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
             RateLimiter::clear($key);
-            $user = Auth::user();
-            return response()->json([
-                'status'   => 'ok',
-                'message'  => 'Login berhasil',
-                'redirect' => route('dashboard'),
-            ]);
+          $user = Auth::user();
+
+                if ($user && $user->role === 'Dosen') {
+                    $redirect = route('dosen.dashboard');
+                } 
+                 elseif ($user->role === 'Mahasiswa') {
+                    $redirect = route('mahasiswa.dashboard');
+                } 
+                else {
+                    $redirect = route('dashboard');
+                }
+                return response()->json([
+                    'status'   => 'ok',
+                    'message'  => 'Login berhasil',
+                    'redirect' => $redirect,
+                ]);
         }
 
         RateLimiter::hit($key, 60);

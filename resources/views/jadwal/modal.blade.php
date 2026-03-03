@@ -78,7 +78,7 @@
                     <option value="">Pilih Instruktur</option>
                     @foreach($dosen as $item)
                         <option value="{{ $item->id }}">
-                            {{ $item->name }} ({{ $item->departemen }})
+                            {{ $item->name }} 
                         </option>
                     @endforeach
                 </select>

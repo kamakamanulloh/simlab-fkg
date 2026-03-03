@@ -30,9 +30,13 @@
 </head>
 <body class="min-h-screen flex bg-[#f6f7f5] text-slate-900">
 
-    {{-- Sidebar --}}
+@if(auth()->user()->role === 'Dosen')
+    @include('partials.sidebar-dosen')
+@elseif(auth()->user()->role === 'Mahasiswa')
+    @include('partials.sidebar-mahasiswa')
+@else
     @include('partials.sidebar')
-
+@endif
     {{-- Main content --}}
     <div class="flex-1 flex flex-col min-h-screen">
         {{-- Header --}}

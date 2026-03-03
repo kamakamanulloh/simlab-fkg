@@ -62,7 +62,19 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-
+'ujian' => [
+    'driver' => 'mysql',
+    'host' => env('DB_UJIAN_HOST', '127.0.0.1'),
+    'port' => env('DB_UJIAN_PORT', '3306'),
+    'database' => env('DB_UJIAN_DATABASE', 'ujian'),
+    'username' => env('DB_UJIAN_USERNAME', 'root'),
+    'password' => env('DB_UJIAN_PASSWORD', ''),
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => '',
+    'strict' => true,
+    'engine' => null,
+],
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

@@ -13,7 +13,7 @@ class LoanReturn extends Model
         'loan_item_id',
         'returned_at',
         'condition',
-        'note',
+        'note','loan_id'
     ];
 
     protected $casts = [

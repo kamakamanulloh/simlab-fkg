@@ -12,6 +12,12 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\QualityController;
 use App\Http\Controllers\LabWasteController;
 use App\Http\Controllers\PelatihanController;
+use App\Http\Controllers\DosenDashboardController;
+use App\Http\Controllers\MahasiswaDashboardController;
+use App\Http\Controllers\MahasiswaReservationController;
+use App\Http\Controllers\MahasiswaLoanController;
+use App\Http\Controllers\MahasiswaLogbookController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -91,6 +97,35 @@ Route::delete('/jadwal/{id}', [JadwalController::class, 'destroy']);
     Route::put('/pelatihan/{id}', [PelatihanController::class, 'update']);
     Route::post('/analisis-biaya/store', [MaintenanceController::class, 'storeCost'])
     ->name('analisis.store');
+        Route::get('/dosen/dashboard', 
+        [DosenDashboardController::class, 'index']
+    )->name('dosen.dashboard');
+    Route::get('/mahasiswa/dashboard',
+        [MahasiswaDashboardController::class, 'index']
+    )->name('mahasiswa.dashboard');
+
+    Route::get('/mahasiswa/jadwal/by-date',
+        [MahasiswaDashboardController::class, 'jadwalByDate']
+    );
+    Route::post('/mahasiswa/reservasi/store', 
+    [MahasiswaReservationController::class, 'store']
+)->middleware('auth');
+Route::post('/mahasiswa/peminjaman/store',
+    [MahasiswaLoanController::class, 'store']
+)->middleware('auth');
+Route::get('/mahasiswa/peminjaman/list',
+    [MahasiswaLoanController::class, 'list']
+)->middleware('auth');
+Route::post('/mahasiswa/peminjaman/return',
+    [\App\Http\Controllers\MahasiswaLoanController::class, 'returnLoan']
+)->middleware('auth');
+ Route::get('/mahasiswa/pengembalian/detail/{loan}', 
+        [MahasiswaLoanController::class, 'detailPengembalian']
+    );
+    
+    Route::post('/mahasiswa/logbook/store',
+        [MahasiswaLogbookController::class, 'store']);
+        Route::get('/mahasiswa/logbook/list', [MahasiswaLogbookController::class, 'list']);
         });
 
 

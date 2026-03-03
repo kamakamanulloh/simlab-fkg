@@ -77,8 +77,9 @@ class JadwalController extends Controller
                 'persen' => min(100, $row->total * 20), // contoh hitungan dummy: 1 jadwal = 20%
             ];
         });
-            $dosen = DB::table('users_dosen')
-                ->select('id','name','departemen')
+            $dosen = DB::table('users')
+                ->select('id','name')
+                ->where('role','Dosen')
                 ->orderBy('name','asc')
                 ->get();
 
@@ -94,7 +95,7 @@ class JadwalController extends Controller
             'ruangan'         => ['nullable', 'string', 'max:150'],
             'tanggal'         => ['required', 'date'],
             'waktu'           => ['required', 'string', 'max:50'],
-            'instruktur_id'      => ['required', 'exists:users_dosen,id'],
+            'instruktur_id'      => ['required', 'exists:users,id'],
             'jumlah_peserta'  => ['nullable', 'integer', 'min:1'],
             'catatan'         => ['nullable', 'string'],
         ]);
