@@ -1,7 +1,15 @@
 import $ from 'jquery'
 
 let current = new Date()
+$(document).ready(function(){
 
+    $('#instruktur_id').select2({
+        dropdownParent: $('#modalJadwal'),
+        placeholder: "Pilih Instruktur",
+        width:'100%'
+    })
+
+})
 function renderCalendar() {
     const year = current.getFullYear()
     const month = current.getMonth()
@@ -222,3 +230,19 @@ function updateWeekLabel(dateStr) {
     $('#weekLabel').text(label)
 }
 
+$(document).on('change','#kelas_id',function(){
+
+    let kelas_id = $(this).val()
+
+    if(!kelas_id){
+        $('[name="jumlah_peserta"]').val('')
+        return
+    }
+
+    $.get('/kelas/'+kelas_id+'/jumlah-mahasiswa',function(res){
+
+        $('[name="jumlah_peserta"]').val(res.jumlah)
+
+    })
+
+})

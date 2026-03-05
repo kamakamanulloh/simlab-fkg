@@ -17,6 +17,7 @@ use App\Http\Controllers\MahasiswaDashboardController;
 use App\Http\Controllers\MahasiswaReservationController;
 use App\Http\Controllers\MahasiswaLoanController;
 use App\Http\Controllers\MahasiswaLogbookController;
+use App\Http\Controllers\KelasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,7 +127,27 @@ Route::post('/mahasiswa/peminjaman/return',
     Route::post('/mahasiswa/logbook/store',
         [MahasiswaLogbookController::class, 'store']);
         Route::get('/mahasiswa/logbook/list', [MahasiswaLogbookController::class, 'list']);
-        });
+  Route::prefix('kelas')->group(function(){
+
+            Route::get('/',[KelasController::class,'index'])->name('kelas.index');
+            Route::post('/store',[KelasController::class,'store']);
+            Route::post('/update',[KelasController::class,'update']);
+            Route::delete('/delete/{id}',[KelasController::class,'destroy']);
+
+            Route::get('/mahasiswa/{kelas}',[KelasController::class,'mahasiswa']);
+            Route::get('/calon',[KelasController::class,'calonMahasiswa']);
+
+            Route::post('/tambah-mahasiswa',[KelasController::class,'tambahMahasiswa']);
+            Route::delete('/hapus-mahasiswa/{id}',[KelasController::class,'hapusMahasiswa']);
+            Route::get('/calon',[KelasController::class,'calonMahasiswa']);
+
+            Route::post('/tambah-mahasiswa',[KelasController::class,'tambahMahasiswa']);
+            Route::get('/datatable-mahasiswa/{kelas}', [KelasController::class,'datatableMahasiswa']);
+Route::get('/datatable-calon', [KelasController::class,'datatableCalonMahasiswa']);
+
+    });
+    Route::get('/kelas/{id}/jumlah-mahasiswa',[JadwalController::class,'jumlahMahasiswa']);
+});
 
 
 

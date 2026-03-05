@@ -12,18 +12,18 @@ class LabSchedule extends Model
     protected $table = 'lab_schedules';
 
     protected $fillable = [
-        'judul',
-        'jenis',
-        'ruangan',
-        'tanggal',
-        'waktu',
-        'instruktur_id',
-        'jumlah_peserta',
-        'catatan',
-        'status',
-        'created_by',
-    ];
-
+    'judul',
+    'jenis',
+    'ruangan',
+    'tanggal',
+    'waktu',
+    'instruktur_id',
+    'kelas_id',
+    'jumlah_peserta',
+    'catatan',
+    'status',
+    'created_by',
+];
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -32,4 +32,8 @@ class LabSchedule extends Model
     {
         return $this->belongsTo(UserDosen::class, 'instruktur_id');
     }
+    public function kelas()
+{
+    return $this->belongsTo(Kelas::class);
+}
 }

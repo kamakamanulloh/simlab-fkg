@@ -103,6 +103,18 @@
                         </a>
                     </li>
                 @endif
+                <li>
+                        <a href="{{ route('kelas.index') }}"
+                           class="flex items-center gap-2 px-3 py-2.5 rounded-xl {{ request()->routeIs('quality-audit.*') ? 'bg-emerald-700 text-white' : 'hover:bg-emerald-800/70' }}">
+                            📊 <span>Rekapitulasi Nilai</span>
+                        </a>
+                    </li>
+                <li>
+                        <a href="{{ route('kelas.index') }}"
+                           class="flex items-center gap-2 px-3 py-2.5 rounded-xl {{ request()->routeIs('quality-audit.*') ? 'bg-emerald-700 text-white' : 'hover:bg-emerald-800/70' }}">
+                            ✅ <span>Manajemen Kelas & Mahasiswa</span>
+                        </a>
+                    </li>
             </ul>
         </div>
 

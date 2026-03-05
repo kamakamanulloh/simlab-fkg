@@ -10,6 +10,12 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         document.body.classList.add('overflow-hidden');
+        
+    $('#instruktur_id').select2({
+        dropdownParent: $('#modalJadwal'),
+        placeholder: "Pilih Instruktur",
+        width:'100%'
+    })
     }
 
     function closeModal() {
@@ -27,56 +33,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target === modal) closeModal();
     };
 
-    // // Submit form AJAX
-    // $('#formJadwalBaru').on('submit', function (e) {
-    //     e.preventDefault();
-
-    //     const btn = $(this).find('button[type="submit"]');
-    //     btn.prop('disabled', true).text('Menyimpan...');
-
-    //     $.post({
-    //         url: form.action,
-    //         data: $(this).serialize(),
-    //         success: function (res) {
-    //             btn.prop('disabled', false).text('Ajukan Jadwal');
-    //             closeModal();
-
-    //             Swal.fire({
-    //                 icon: 'success',
-    //                 title: 'Berhasil',
-    //                 text: res.message,
-    //                 confirmButtonColor: '#059669'
-    //             }).then(() => {
-    //                 window.location.reload();
-    //             });
-    //         },
-    //         error: function (xhr) {
-    //             btn.prop('disabled', false).text('Ajukan Jadwal');
-
-    //             if (xhr.status === 422) {
-    //                 let errors = Object.values(xhr.responseJSON.errors)
-    //                     .map(e => e.join('<br>'))
-    //                     .join('<br>');
-
-    //                 Swal.fire({
-    //                     icon: 'error',
-    //                     title: 'Validasi Gagal',
-    //                     html: errors
-    //                 });
-    //             } else {
-    //                 Swal.fire({
-    //                     icon: 'error',
-    //                     title: 'Error',
-    //                     text: 'Terjadi kesalahan server.'
-    //                 });
-    //             }
-    //         }
-    //     });
-    // });
     $('#instruktur_id').select2({
-    dropdownParent: $('#modalJadwal'),
-    placeholder: "Pilih Instruktur",
-    width: '100%'
-});
+        dropdownParent: $('#modalJadwal'),
+        placeholder: "Pilih Instruktur",
+        width:'100%'
+    })
 });
 </script>

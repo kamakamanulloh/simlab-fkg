@@ -14,6 +14,10 @@ class JadwalController extends Controller
     // ============================
     // FILTER TANGGAL (optional)
     // ============================
+    $kelas = DB::table('kelas')
+            ->select('id','nama_kelas')
+            ->orderBy('nama_kelas')
+            ->get();
     $filterDate = $request->query('tanggal'); // contoh: ?tanggal=2025-11-06
 
     if ($filterDate) {
@@ -84,7 +88,7 @@ class JadwalController extends Controller
                 ->get();
 
     return view('jadwal.index', compact(
-        'weekRange', 'schedules', 'roomsToday', 'weeklyUsage', 'filterDate','dosen'
+        'weekRange', 'schedules', 'roomsToday', 'weeklyUsage', 'filterDate','dosen', 'kelas'
     ));
 }
        public function store(Request $request)
@@ -169,5 +173,15 @@ public function destroy($id)
         'message' => 'Jadwal berhasil dihapus'
     ]);
 }
+public function jumlahMahasiswa($kelas_id)
+{
+    $total = DB::table('users')
+        ->where('role','Mahasiswa')
+        ->where('kelas',$kelas_id)
+        ->count();
 
+    return response()->json([
+        'jumlah'=>$total
+    ]);
+}
 }

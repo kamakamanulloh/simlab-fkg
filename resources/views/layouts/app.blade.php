@@ -29,7 +29,42 @@
     @stack('head')
 </head>
 <body class="min-h-screen flex bg-[#f6f7f5] text-slate-900">
+<!-- GLOBAL LOADING -->
 
+<div id="globalLoading"
+class="fixed inset-0 bg-black/40 z-[9999] hidden items-center justify-center">
+
+<div class="bg-white rounded-xl shadow-lg px-6 py-4 flex items-center gap-3">
+
+<svg class="animate-spin h-5 w-5 text-blue-600"
+xmlns="http://www.w3.org/2000/svg"
+fill="none"
+viewBox="0 0 24 24">
+
+<circle
+class="opacity-25"
+cx="12"
+cy="12"
+r="10"
+stroke="currentColor"
+stroke-width="4">
+</circle>
+
+<path
+class="opacity-75"
+fill="currentColor"
+d="M4 12a8 8 0 018-8v8H4z">
+</path>
+
+</svg>
+
+<span class="text-sm font-medium text-gray-700">
+Memproses...
+</span>
+
+</div>
+
+</div>
 @if(auth()->user()->role === 'Dosen')
     @include('partials.sidebar-dosen')
 @elseif(auth()->user()->role === 'Mahasiswa')
@@ -51,11 +86,7 @@
     </div>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
- <script src="https://unpkg.com/html5-qrcode@2.3.8/minified/html5-qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
   
 @stack('scripts')
  

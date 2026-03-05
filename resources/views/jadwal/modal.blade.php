@@ -26,6 +26,24 @@
                 <input type="text" name="judul"
                     class="w-full rounded-2xl border border-emerald-100 bg-emerald-50/60 px-4 py-2.5 text-sm">
             </div>
+            {{-- KELAS --}}
+<div class="space-y-1">
+    <label class="text-xs font-medium text-slate-800">Kelas</label>
+
+    <select name="kelas_id"
+        id="kelas_id"
+        class="w-full rounded-2xl border border-emerald-100 bg-emerald-50/60 px-4 py-2.5 text-sm">
+
+        <option value="">Pilih kelas</option>
+
+        @foreach($kelas as $k)
+            <option value="{{ $k->id }}">
+                {{ $k->nama_kelas }}
+            </option>
+        @endforeach
+
+    </select>
+</div>
 
             {{-- Jenis & Ruangan --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -112,3 +130,5 @@
         </form>
     </div>
 </div>
+
+
